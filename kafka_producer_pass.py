@@ -7,12 +7,16 @@ import json
 class kafka_producer(object):
     producer = {}
 
-    def __init__(self, kafka_server=['10.91.125.32:9092']):
+    def __init__(self, kafka_server=['test.plain.com:9092'], username='bus4_dispatch', password='vQMYGDzUB4NdLrj7AjaT'):
         # 假设生产的消息为键值对（不是一定要键值对），且序列化方式为json
         self.producer = KafkaProducer(
             bootstrap_servers=kafka_server,
             key_serializer=lambda k: json.dumps(k).encode(),
-            value_serializer=lambda v: json.dumps(v).encode())
+            value_serializer=lambda v: json.dumps(v).encode(),
+            sasl_mechanism='PLAIN',
+            security_protocol='SASL_PLAINTEXT',
+            sasl_plain_username=username,
+            sasl_plain_password=password)
 
     def send(self, topic, msg):
         future = self.producer.send(
@@ -33,4 +37,4 @@ if __name__ == '__main__':
               '"package_type":"1e","prompt_duration":10,"prompt_status":1,"route_code":"07730","seqno":123456,' \
               '"task_type":"00","reply_sn":948362012} '
     kafka = kafka_producer()
-    kafka.send('dispatch_bus_test', message)
+    kafka.send('dispatch_bus_app_ver4', message)
