@@ -1,1 +1,6 @@
+APScheduler==3.10.1
 kafka_python==2.0.2
+PyYAML==6.0
+Requests==2.31.0
+requests_html==0.10.0
+selenium==4.10.0

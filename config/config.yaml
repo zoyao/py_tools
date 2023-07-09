@@ -1,0 +1,20 @@
+#消息推送
+notice:
+  url: https://api2.pushdeer.com/message/push?
+#消息推送
+users:
+  yzy:
+    key: PDU21883Tv6bAqX9srtXSmEKKYBY7arK3QilSMLap
+  yao:
+    key: PDU21883Tv6bAqX9srtXSmEKKYBY7arK3QilSMLap
+#定时任务监控
+check:
+  lukou:
+    cron: 0/50 * * * * * *
+    list:
+      - user: yzy
+        keywords:
+          - 饮用水
+          - 矿泉水
+          - 八喜
+          - 眼镜
