@@ -8,7 +8,11 @@ import time
 
 class lukou(object):
     option = webdriver.ChromeOptions()
+    option.add_argument('--no-sandbox')  # 设置option
+    option.add_argument('--disable-dev-shm-usage')  # 设置option
     option.add_argument('--headless')  # 设置option
+    option.add_argument('blink-settings=imagesEnabled=false')  # 设置option
+    option.add_argument('--disable-gpu')  # 设置option
     browser = webdriver.Chrome(options=option)  # 调用带参数的谷歌浏览器
     check_list = []
     end_id = 0
