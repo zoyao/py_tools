@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import os
 import yaml
 from selenium.webdriver.common.by import By
@@ -7,17 +8,20 @@ import time
 
 
 class lukou(object):
-    option = webdriver.ChromeOptions()
-    option.add_argument('--no-sandbox')  # 设置option
-    option.add_argument('--disable-dev-shm-usage')  # 设置option
-    option.add_argument('--headless')  # 设置option
-    option.add_argument('blink-settings=imagesEnabled=false')  # 设置option
-    option.add_argument('--disable-gpu')  # 设置option
-    browser = webdriver.Chrome(options=option)  # 调用带参数的谷歌浏览器
-    check_list = []
-    end_id = 0
-
     def __init__(self):
+        option = webdriver.ChromeOptions()
+        option.add_argument('--no-sandbox')  # 设置option
+        option.add_argument('--disable-dev-shm-usage')  # 设置option
+        option.add_argument('--headless')  # 设置option
+        option.add_argument('blink-settings=imagesEnabled=false')  # 设置option
+        option.add_argument('--disable-gpu')  # 设置option
+        self.browser = webdriver.Remote(
+            command_executor="http://139.198.178.154:4444/wd/hub",
+            desired_capabilities=DesiredCapabilities.CHROME,
+            options=option
+        )
+        self.check_list = []
+        self.end_id = 0
         with open(os.path.expanduser("../config/config.yaml"), "r", encoding='utf-8') as config:
             cfg = yaml.safe_load(config)
             self.check_list = cfg['check']['lukou']['list']
