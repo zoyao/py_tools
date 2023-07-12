@@ -1,6 +1,6 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
-from lukou2 import lukou
+from check_tool.lukou2 import lukou
 import os
 import yaml
 
@@ -16,10 +16,11 @@ class my_CronTrigger(CronTrigger):
                    day_of_week=values[5], year=values[6], timezone=timezone)
 
 
-with open(os.path.expanduser("../config/config.yaml"), "r", encoding='utf-8') as config:
-    cfg = yaml.safe_load(config)
-    check_lukou_cron = cfg['check']['lukou']['cron']
-lukou_check = lukou()
-schedule = BlockingScheduler()
-schedule.add_job(lukou_check.check, my_CronTrigger.my_from_crontab(check_lukou_cron))
-schedule.start()
+def run(base_dir='..'):
+    with open(os.path.expanduser(base_dir + "/config/config.yaml"), "r", encoding='utf-8') as config:
+        cfg = yaml.safe_load(config)
+        check_lukou_cron = cfg['check']['lukou']['cron']
+    lukou_check = lukou(base_dir)
+    schedule = BlockingScheduler()
+    schedule.add_job(lukou_check.check, my_CronTrigger.my_from_crontab(check_lukou_cron))
+    schedule.start()

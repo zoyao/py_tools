@@ -3,12 +3,13 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import os
 import yaml
 from selenium.webdriver.common.by import By
-from notice_tool import notice
+from notice_tool.pushdeer import notice
 import time
+from common.log import logging
 
 
 class lukou(object):
-    def __init__(self):
+    def __init__(self, base_dir='..'):
         option = webdriver.ChromeOptions()
         option.add_argument('--no-sandbox')  # 设置option
         option.add_argument('--disable-dev-shm-usage')  # 设置option
@@ -16,17 +17,19 @@ class lukou(object):
         option.add_argument('blink-settings=imagesEnabled=false')  # 设置option
         option.add_argument('--disable-gpu')  # 设置option
         self.browser = webdriver.Remote(
-            command_executor="http://139.198.178.154:4444/wd/hub",
+            command_executor="http://127.0.0.1:4444/wd/hub",
             desired_capabilities=DesiredCapabilities.CHROME,
             options=option
         )
         self.check_list = []
         self.end_id = 0
-        with open(os.path.expanduser("../config/config.yaml"), "r", encoding='utf-8') as config:
+        self.notice = notice(base_dir)
+        with open(os.path.expanduser(base_dir + "/config/config.yaml"), "r", encoding='utf-8') as config:
             cfg = yaml.safe_load(config)
             self.check_list = cfg['check']['lukou']['list']
 
     def login(self):
+        logging.info('login')
         self.browser.get('https://www.lukou.com/?login')
         self.browser.find_element(By.CSS_SELECTOR, '.login').click()
         self.browser.find_element(By.CSS_SELECTOR, '#email').send_keys('13143117086')
@@ -40,15 +43,15 @@ class lukou(object):
             time.sleep(1)
 
     def check(self):
+        logging.info('begin')
         begin_end_id = self.end_id
         first_flag = True
         self.browser.get('https://www.lukou.com/circle')
         list = self.browser.find_elements(By.CSS_SELECTOR, '.feed-wrap')
-        #login
-        if (not list):
-            print('login')
+        # login
+        if not list:
             self.login()
-        #get all
+        # get all
         circle_url = 'https://www.lukou.com/circle'
         url = circle_url
         page = 0
@@ -56,7 +59,7 @@ class lukou(object):
             self.browser.get(url)
             self.reload(7)
             list = self.browser.find_elements(By.CSS_SELECTOR, '.feed-wrap')
-            if (not list):
+            if not list:
                 return
             for x in list:
                 url = x.find_element(By.CSS_SELECTOR, '.feed-link').get_attribute('href')
@@ -66,6 +69,7 @@ class lukou(object):
                     id_str = url[url.index('userfeed/') + 9:]
                 id = int(id_str)
                 if id <= begin_end_id:
+                    logging.info('end')
                     return
                 if first_flag:
                     first_flag = False
@@ -93,8 +97,9 @@ class lukou(object):
                     else:
                         flag = True
                     if flag:
-                        notice.send_notice(user, '路口关键词匹配成功' + words, detail + '<' + url + '>')
+                        self.notice.send_notice(user, '路口关键词匹配成功' + words, detail + '<' + url + '>')
             page += 1
             url = circle_url + '?end_id=' + str(end_id) + '&page=' + str(page)
             if page >= 5:
+                logging.info('end')
                 return

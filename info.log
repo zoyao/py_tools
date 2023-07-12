@@ -1,0 +1,39 @@
+2023-07-11 11:14:06,536 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts-add_job
+2023-07-11 11:14:06,540 - apscheduler.scheduler - INFO - Added job "lukou.check" to job store "default"-_real_add_job
+2023-07-11 11:14:06,540 - apscheduler.scheduler - INFO - Scheduler started-start
+2023-07-11 11:14:50,042 - apscheduler.executors.default - INFO - Running job "lukou.check (trigger: cron[year='*', month='*', day='*', day_of_week='*', hour='*', minute='*', second='0/50'], next run at: 2023-07-11 11:15:00 CST)" (scheduled at 2023-07-11 11:14:50+08:00)-run_job
+2023-07-11 11:14:50,042 - root - INFO - begin-check
+2023-07-11 11:14:50,045 - apscheduler.executors.default - ERROR - Job "lukou.check (trigger: cron[year='*', month='*', day='*', day_of_week='*', hour='*', minute='*', second='0/50'], next run at: 2023-07-11 11:15:00 CST)" raised an exception-run_job
+Traceback (most recent call last):
+  File "D:\ProgramData\Anaconda3\envs\tech\lib\site-packages\apscheduler\executors\base.py", line 125, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "D:\Documents\py_tools\check_tool\lukou2.py", line 49, in check
+    self.browser.get('https://www.lukou.com/circle')
+AttributeError: 'lukou' object has no attribute 'browser'
+2023-07-11 11:15:00,011 - apscheduler.executors.default - INFO - Running job "lukou.check (trigger: cron[year='*', month='*', day='*', day_of_week='*', hour='*', minute='*', second='0/50'], next run at: 2023-07-11 11:15:50 CST)" (scheduled at 2023-07-11 11:15:00+08:00)-run_job
+2023-07-11 11:15:00,011 - root - INFO - begin-check
+2023-07-11 11:15:00,012 - apscheduler.executors.default - ERROR - Job "lukou.check (trigger: cron[year='*', month='*', day='*', day_of_week='*', hour='*', minute='*', second='0/50'], next run at: 2023-07-11 11:15:50 CST)" raised an exception-run_job
+Traceback (most recent call last):
+  File "D:\ProgramData\Anaconda3\envs\tech\lib\site-packages\apscheduler\executors\base.py", line 125, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "D:\Documents\py_tools\check_tool\lukou2.py", line 49, in check
+    self.browser.get('https://www.lukou.com/circle')
+AttributeError: 'lukou' object has no attribute 'browser'
+2023-07-11 11:15:50,016 - apscheduler.executors.default - INFO - Running job "lukou.check (trigger: cron[year='*', month='*', day='*', day_of_week='*', hour='*', minute='*', second='0/50'], next run at: 2023-07-11 11:16:00 CST)" (scheduled at 2023-07-11 11:15:50+08:00)-run_job
+2023-07-11 11:15:50,017 - root - INFO - begin-check
+2023-07-11 11:15:50,018 - apscheduler.executors.default - ERROR - Job "lukou.check (trigger: cron[year='*', month='*', day='*', day_of_week='*', hour='*', minute='*', second='0/50'], next run at: 2023-07-11 11:16:00 CST)" raised an exception-run_job
+Traceback (most recent call last):
+  File "D:\ProgramData\Anaconda3\envs\tech\lib\site-packages\apscheduler\executors\base.py", line 125, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "D:\Documents\py_tools\check_tool\lukou2.py", line 49, in check
+    self.browser.get('https://www.lukou.com/circle')
+AttributeError: 'lukou' object has no attribute 'browser'
+2023-07-11 11:16:00,008 - apscheduler.executors.default - INFO - Running job "lukou.check (trigger: cron[year='*', month='*', day='*', day_of_week='*', hour='*', minute='*', second='0/50'], next run at: 2023-07-11 11:16:50 CST)" (scheduled at 2023-07-11 11:16:00+08:00)-run_job
+2023-07-11 11:16:00,009 - root - INFO - begin-check
+2023-07-11 11:16:00,010 - apscheduler.executors.default - ERROR - Job "lukou.check (trigger: cron[year='*', month='*', day='*', day_of_week='*', hour='*', minute='*', second='0/50'], next run at: 2023-07-11 11:16:50 CST)" raised an exception-run_job
+Traceback (most recent call last):
+  File "D:\ProgramData\Anaconda3\envs\tech\lib\site-packages\apscheduler\executors\base.py", line 125, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "D:\Documents\py_tools\check_tool\lukou2.py", line 49, in check
+    self.browser.get('https://www.lukou.com/circle')
+AttributeError: 'lukou' object has no attribute 'browser'
