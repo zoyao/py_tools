@@ -10,7 +10,7 @@ users:
 #定时任务监控
 check:
   lukou:
-    cron: 0/50 * * * * * *
+    interval: 60
     list:
       - user: yzy
         keywords:

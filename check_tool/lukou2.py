@@ -1,5 +1,4 @@
 from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import os
 import yaml
 from selenium.webdriver.common.by import By
@@ -17,8 +16,7 @@ class lukou(object):
         option.add_argument('blink-settings=imagesEnabled=false')  # 设置option
         option.add_argument('--disable-gpu')  # 设置option
         self.browser = webdriver.Remote(
-            command_executor="http://127.0.0.1:4444/wd/hub",
-            desired_capabilities=DesiredCapabilities.CHROME,
+            command_executor="http://139.198.178.154:4444/wd/hub",
             options=option
         )
         self.check_list = []
@@ -67,6 +65,7 @@ class lukou(object):
                     id_str = url[url.index('userfeed/') + 9:url.index('?')]
                 else:
                     id_str = url[url.index('userfeed/') + 9:]
+                logging.info(id_str)
                 id = int(id_str)
                 if id <= begin_end_id:
                     logging.info('end')
