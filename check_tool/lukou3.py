@@ -105,6 +105,7 @@ class lukou(object):
                 base_url = 'https://www.lukou.com/circle'
                 format_flag = False
             if page >= 5:
+                logging.info('end')
                 return
             result = self.session.get(base_url + '?end_id=' + str(end_id) + '&page=' + str(page) + '&start=' + str(start))
             if format_flag:
