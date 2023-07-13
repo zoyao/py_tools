@@ -1,19 +1,17 @@
 import os
-
-import requests_html
 import yaml
-from selenium.webdriver.common.by import By
 from notice_tool.pushdeer import notice
-import time
 from common.log import logging
 from requests_html import HTMLSession
 import json
 from bs4 import BeautifulSoup
 
+
 class ElementY(object):
     def __init__(self, absolute_links, text):
         self.absolute_links = absolute_links
         self.text = text
+
 
 class lukou(object):
     session = HTMLSession()
@@ -111,4 +109,3 @@ class lukou(object):
             result = self.session.get(base_url + '?end_id=' + str(end_id) + '&page=' + str(page) + '&start=' + str(start))
             if format_flag:
                 result = json.loads(result.html.html).get('html')
-            print()
