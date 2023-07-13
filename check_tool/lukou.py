@@ -1,7 +1,7 @@
 from requests_html import HTMLSession
 import os
 import yaml
-from notice_tool import notice
+from notice_tool.pushdeer import notice
 
 
 class lukou(object):

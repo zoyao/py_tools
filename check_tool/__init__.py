@@ -2,7 +2,7 @@ import time
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
-from check_tool.lukou2 import lukou
+from check_tool.lukou3 import lukou
 import os
 import yaml
 
