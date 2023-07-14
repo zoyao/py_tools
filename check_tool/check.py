@@ -28,7 +28,14 @@ def check(c, detail):
 
 def url_format(text):
     # findall() 查找匹配正则表达式的字符串
-    urls = re.findall('https?://(?:/?[-\w.]|(?:%[\da-fA-F]{2}))+', text)
+    chs = re.findall('[\u4e00-\u9fa5]', text)
+    text_no_chs = text
+    for ch in chs:
+        text_no_chs = text_no_chs.replace(ch, ' ')
+    urls = re.findall('https?://(?:/?[-\w.]|(?:%[\da-fA-F]{2}))+', text_no_chs)
     for url in urls:
         text = text.replace(url, '  <' + url + '>  ')
     return text
+
+
+print(url_format("https://u.jd.com/3bGD4r9八喜冰淇淋"))
