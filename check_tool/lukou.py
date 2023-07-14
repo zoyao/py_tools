@@ -16,15 +16,14 @@ class ElementY(object):
 class lukou(object):
     session = HTMLSession()
 
-    def __init__(self, config=conf()):
+    def __init__(self):
         self.end_id = 0
-        self.config = config
 
     def login(self):
         logging.info('login')
         self.session.post('https://www.lukou.com/login?type=phone&password=clock668204y&phone=13143117086')
 
-    def check(self):
+    def check(self, config=conf()):
         logging.info('begin')
         begin_end_id = self.end_id
         first_flag = True
@@ -83,12 +82,12 @@ class lukou(object):
                         self.end_id = end_id
                 detail = x.text
                 # 检查是否有匹配内容
-                for c in self.config.get_check_list():
+                for c in config.get_check_list():
                     user = c['user']
                     flag, words = check(c, detail)
                     if flag:
                         # 调用通知接口
-                        send_notice(user, '路口关键词匹配成功' + words, detail + '<' + url + '>', self.config)
+                        send_notice(user, '路口关键词匹配成功' + words, detail + '<' + url + '>', config)
             format_flag = True
             if start >= 50:
                 # 翻页
