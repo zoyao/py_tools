@@ -1,6 +1,7 @@
 #消息推送
 notice:
-  url: https://api2.pushdeer.com/message/push?
+  pushdeer:
+    url: https://api2.pushdeer.com/message/push?
 #消息推送
 users:
   yzy:
