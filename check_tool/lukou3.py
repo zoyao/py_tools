@@ -70,6 +70,7 @@ class lukou(object):
                 try:
                     id = int(id_str)
                 except Exception as e:
+                    id = 0
                     logging.error(url)
                     logging.error(x.absolute_links)
 
