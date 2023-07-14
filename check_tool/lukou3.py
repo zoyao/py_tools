@@ -67,7 +67,12 @@ class lukou(object):
                 else:
                     id_str = url[url.index('userfeed/') + 9:]
                 logging.info(id_str)
-                id = int(id_str)
+                try:
+                    id = int(id_str)
+                except Exception as e:
+                    logging.error(url)
+                    logging.error(x.absolute_links)
+
                 if id <= begin_end_id:
                     logging.info('end')
                     return
