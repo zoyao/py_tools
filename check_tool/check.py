@@ -1,5 +1,6 @@
 def check(c, detail):
     flag = False
+    words = '【无】'
     if 'keywords' in c.keys():
         for keys in c['keywords']:
             # keywords 内任意满足即可
@@ -19,4 +20,4 @@ def check(c, detail):
     else:
         # keywords 无数据，全部推送
         flag = True
-    return flag
+    return flag, words

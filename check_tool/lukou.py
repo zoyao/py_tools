@@ -82,12 +82,10 @@ class lukou(object):
                     if end_id > self.end_id:
                         self.end_id = end_id
                 detail = x.text
-                # auth = x.find('.author')
-                words = '【无】'
                 # 检查是否有匹配内容
                 for c in self.config.get_check_list():
                     user = c['user']
-                    flag = check(c, detail)
+                    flag, words = check(c, detail)
                     if flag:
                         # 调用通知接口
                         send_notice(user, '路口关键词匹配成功' + words, detail + '<' + url + '>', self.config)
