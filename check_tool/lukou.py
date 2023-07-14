@@ -1,9 +1,9 @@
-from notice_tool.pushdeer import send_notice
+from notice_tool import pushdeer
 from common.log import logging
 from requests_html import HTMLSession
 import json
 from bs4 import BeautifulSoup
-from check_tool.check import check
+from check_tool import check
 from config.config import conf
 
 
@@ -84,10 +84,12 @@ class lukou(object):
                 # 检查是否有匹配内容
                 for c in config.get_check_list():
                     user = c['user']
-                    flag, words = check(c, detail)
+                    flag, words = check.check(c, detail)
                     if flag:
                         # 调用通知接口
-                        send_notice(user, '路口关键词匹配成功' + words, detail + '<' + url + '>', config)
+                        share_url = 'https://www.lukou.cn/sharefeed/' + id_str
+                        pushdeer.add_notice(user, '路口关键词匹配成功' + words,
+                                            check.url_format(detail) + '  <' + share_url + '>  ', config)
             format_flag = True
             if start >= 50:
                 # 翻页
@@ -98,7 +100,13 @@ class lukou(object):
             if page >= 5:
                 logging.info('end')
                 return
-            result = self.session.get(base_url + '?end_id=' + str(end_id) + '&page=' + str(page) + '&start=' + str(start))
+            for i in range(10):
+                try:
+                    result = self.session.get(base_url + '?end_id=' + str(end_id) + '&page=' + str(page) + '&start=' + str(start))
+                except Exception as e:
+                    logging.error(e)
+                    continue
+                break
             if format_flag:
                 # 兼容下拉加载数据，下拉数据以json方式返回
                 result = json.loads(result.html.html).get('html')

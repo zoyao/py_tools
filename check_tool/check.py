@@ -1,3 +1,6 @@
+import re
+
+
 def check(c, detail):
     flag = False
     words = '【无】'
@@ -21,3 +24,11 @@ def check(c, detail):
         # keywords 无数据，全部推送
         flag = True
     return flag, words
+
+
+def url_format(text):
+    # findall() 查找匹配正则表达式的字符串
+    urls = re.findall('https?://(?:/?[-\w.]|(?:%[\da-fA-F]{2}))+', text)
+    for url in urls:
+        text = text.replace(url, '  <' + url + '>  ')
+    return text
