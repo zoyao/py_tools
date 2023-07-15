@@ -1,13 +1,13 @@
 #消息推送
 notice:
   pushdeer:
-    url: https://api2.pushdeer.com/message/push?
+    url: http://139.198.178.154:8800/message/push?
 #消息推送
 users:
   yzy:
-    key: PDU21883Tv6bAqX9srtXSmEKKYBY7arK3QilSMLap
+    key: PDU1Ttmn2KngrRHODOeuVQvU0DkQNgxKshkho
   yao:
-    key: PDU21883Tv6bAqX9srtXSmEKKYBY7arK3QilSMLap
+    key: PDU1Ttmn2KngrRHODOeuVQvU0DkQNgxKshkho
 #定时任务监控
 check:
   lukou:

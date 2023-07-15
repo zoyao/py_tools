@@ -56,7 +56,7 @@ class lukou(object):
                 list = result.html.find('.feed-wrap')
             for x in list:
                 for url in x.absolute_links:
-                    if 'lukou' in url and 'userfeed' in url and '#' not in url:
+                    if 'lukou' in url and 'userfeed' in url and '#' not in url and 'link' not in url:
                         break
                 # 根据url读取商品id
                 if '?' in url:
