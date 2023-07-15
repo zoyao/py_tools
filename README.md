@@ -16,5 +16,5 @@ pipreqs . --encoding=utf8 --force
 
 ### check_tool
 ```docker
-docker run -d --name check -e TZ=Asia/Shanghai -v /app/py_tools_config/logs:/app/logs -v /app/py_tools_config/resources:/app/resources check:0.1
+docker run -d --name check -e TZ=Asia/Shanghai --network host -v /app/py_tools_config/logs:/app/logs -v /app/py_tools_config/resources:/app/resources check:0.1
 ```
