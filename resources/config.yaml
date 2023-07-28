@@ -1,21 +1,26 @@
+#路口登录用户
+lukou:
+  username: username
+  password: password
 #消息推送
 notice:
   pushdeer:
-    url: http://139.198.178.154:8800/message/push?
+    url: http://localhost:8800/message/push?
 #消息推送
 users:
-  yzy:
-    key: PDU1Ttmn2KngrRHODOeuVQvU0DkQNgxKshkho
+  zoyao:
+    key: PDU1Ttmn2KngrRHODOeu
   yao:
-    key: PDU1Ttmn2KngrRHODOeuVQvU0DkQNgxKshkho
+    key: PDU1Ttmn2KngrRHODOeu
 #定时任务监控
 check:
   lukou:
     interval: 60
     list:
-      - user: yzy
+      - user: zoyao
         keywords:
           - 饮用水
           - 矿泉水
           - 八喜
           - 眼镜
+          - 评论

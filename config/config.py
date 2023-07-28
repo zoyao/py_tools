@@ -19,7 +19,13 @@ class conf(object):
         return self.cfg['check']['lukou']['interval']
 
     def get_pushdeer_url(self):
-        return self.cfg['notice']['pushdeer']['url']
+        return str(self.cfg['notice']['pushdeer']['url'])
 
     def get_users(self):
         return self.cfg['users']
+
+    def get_lukou_username(self):
+        return str(self.cfg['lukou']['username'])
+
+    def get_lukou_password(self):
+        return str(self.cfg['lukou']['password'])

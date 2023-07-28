@@ -9,7 +9,7 @@ from check_tool import check
 
 def run_interval(base_dir='..'):
     config = conf(base_dir)
-    lukou_check = lukou()
+    lukou_check = lukou(config)
     pushdeer.set_config(config)
     for i in range(10):
         Thread(target=pushdeer.send_notice).start()

@@ -18,7 +18,7 @@ def set_config(con):
 def add_notice(user, title, message=''):
     url = config.get_pushdeer_url()
     users = config.get_users()
-    list.append(url + 'pushkey=' + users[user]['key'] + '&text=' + title + '&desp=' + message)
+    list.append(url + 'pushkey=' + str(users[user]['key']) + '&text=' + title + '&desp=' + message)
 
 
 def send_notice():

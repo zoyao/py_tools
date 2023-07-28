@@ -55,7 +55,8 @@ def check(c, detail):
     flag = False
     words = '【无】'
     if 'keywords' in c.keys():
-        for keys in c['keywords']:
+        for keys_default in c['keywords']:
+            keys = str(keys_default)
             # keywords 内任意满足即可
             words = ''
             key_flag = True

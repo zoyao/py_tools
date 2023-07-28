@@ -3,6 +3,7 @@ from requests_html import HTMLSession
 import json
 from bs4 import BeautifulSoup
 from check_tool import check
+from config.config import conf
 
 
 class ElementY(object):
@@ -14,12 +15,14 @@ class ElementY(object):
 class lukou(object):
     session = HTMLSession()
 
-    def __init__(self):
+    def __init__(self, config=conf()):
         self.end_id = 0
+        self.config = config
 
     def login(self):
         logging.info('login')
-        self.session.post('https://www.lukou.com/login?type=phone&password=clock668204y&phone=13143117086')
+        self.session.post('https://www.lukou.com/login?type=phone&password=' + self.config.get_lukou_password()
+                          + '&phone=' + self.config.get_lukou_username())
 
     def check(self):
         logging.info('begin')
