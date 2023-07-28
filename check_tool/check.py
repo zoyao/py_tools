@@ -1,4 +1,54 @@
+import logging
 import re
+from collections import deque
+import time
+import random
+from notice_tool import pushdeer
+from config.config import conf
+
+
+list = deque()
+config = conf()
+
+
+def set_config(con):
+    global config
+    config = con
+
+
+def add_check(id, detail):
+    message = {
+        "id": id,
+        "detail": detail
+    }
+    list.append(message)
+
+
+def check_all():
+    while True:
+        if list:
+            message = None
+            try:
+                message = list.popleft()
+            except Exception as e:
+                pass
+            if message:
+                try:
+                    # 检查是否有匹配内容
+                    for c in config.get_check_list():
+                        user = c['user']
+                        flag, words = check(c, message['detail'])
+                        if flag:
+                            # 调用通知接口
+                            share_url = 'https://www.lukou.cn/sharefeed/' + message['id']
+                            pushdeer.add_notice(user, '路口关键词匹配成功' + words,
+                                                url_format(message['detail']) + '  <' + share_url + '>  ')
+                except Exception as e:
+                    list.appendleft(message)
+                    logging.error(e)
+                continue
+        time.sleep(random.uniform(1, 2))
+        continue
 
 
 def check(c, detail):
@@ -36,6 +86,3 @@ def url_format(text):
     for url in urls:
         text = text.replace(url, '  <' + url + '>  ')
     return text
-
-
-print(url_format("https://u.jd.com/3bGD4r9八喜冰淇淋"))

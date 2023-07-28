@@ -4,17 +4,22 @@ from check_tool.lukou import lukou
 from config.config import conf
 from notice_tool import pushdeer
 from threading import Thread
+from check_tool import check
 
 
 def run_interval(base_dir='..'):
     config = conf(base_dir)
     lukou_check = lukou()
+    pushdeer.set_config(config)
     for i in range(10):
         Thread(target=pushdeer.send_notice).start()
+    check.set_config(config)
+    for i in range(10):
+        Thread(target=check.check_all).start()
     while True:
         try:
             config.reload()
-            lukou_check.check(config)
+            lukou_check.check()
             time.sleep(config.get_interval())
         except Exception as e:
             logging.error(e)

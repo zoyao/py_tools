@@ -1,10 +1,8 @@
-from notice_tool import pushdeer
 from common.log import logging
 from requests_html import HTMLSession
 import json
 from bs4 import BeautifulSoup
 from check_tool import check
-from config.config import conf
 
 
 class ElementY(object):
@@ -23,7 +21,7 @@ class lukou(object):
         logging.info('login')
         self.session.post('https://www.lukou.com/login?type=phone&password=clock668204y&phone=13143117086')
 
-    def check(self, config=conf()):
+    def check(self):
         logging.info('begin')
         begin_end_id = self.end_id
         first_flag = True
@@ -82,14 +80,7 @@ class lukou(object):
                         self.end_id = end_id
                 detail = x.text
                 # 检查是否有匹配内容
-                for c in config.get_check_list():
-                    user = c['user']
-                    flag, words = check.check(c, detail)
-                    if flag:
-                        # 调用通知接口
-                        share_url = 'https://www.lukou.cn/sharefeed/' + id_str
-                        pushdeer.add_notice(user, '路口关键词匹配成功' + words,
-                                            check.url_format(detail) + '  <' + share_url + '>  ', config)
+                check.add_check(id_str, detail)
             format_flag = True
             if start >= 50:
                 # 翻页
