@@ -83,7 +83,10 @@ def url_format(text):
     text_no_chs = text
     for ch in chs:
         text_no_chs = text_no_chs.replace(ch, ' ')
-    urls = re.findall('https?://(?:/?[-\w.]|(?:%[\da-fA-F]{2}))+', text_no_chs)
-    for url in urls:
+    urls = re.findall('(http|https)(://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4})(/[a-zA-Z0-9./_-]+)(\\?[a-zA-Z0-9=&]+)?(#\\S+)?', text_no_chs)
+    for url_list in urls:
+        url = ''
+        for ur in url_list:
+            url += ur
         text = text.replace(url, '  <' + url + '>  ')
-    return text
+    return text.replace('&', '%26')
