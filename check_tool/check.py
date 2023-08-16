@@ -41,7 +41,7 @@ def check_all():
                         if flag:
                             # 调用通知接口
                             share_url = 'https://www.lukou.cn/sharefeed/' + message['id']
-                            pushdeer.add_notice(user, '路口关键词匹配成功' + words,
+                            pushdeer.add_notice(user, '路口' + words,
                                                 url_format(message['detail']) + '  <' + share_url + '>  ')
                 except Exception as e:
                     list.appendleft(message)
@@ -55,14 +55,13 @@ def check(c, detail):
     flag = False
     words = '【无】'
     if 'keywords' in c.keys():
+        words = ''
         for keys_default in c['keywords']:
             keys = str(keys_default)
             # keywords 内任意满足即可
-            words = ''
             key_flag = True
             for key in keys.split(','):
                 # 以','分割内容需全部满足
-                words += '【' + key + '】'
                 if key not in detail:
                     # 匹配失败
                     key_flag = False
@@ -70,7 +69,7 @@ def check(c, detail):
             if key_flag:
                 # 匹配成功
                 flag = True
-                break
+                words += '【' + keys + '】'
     else:
         # keywords 无数据，全部推送
         flag = True
