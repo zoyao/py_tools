@@ -3,14 +3,25 @@
 # author： zhizhi
 # datetime： 2023-08-15 9:33 
 # ide： PyCharm
+import numpy as np
+
 from tianyancha import Tianyancha
 import pandas as pd
 
+excel_file = 'output.xlsx'
+start_row = 0
 
-def print_info(info):
-    print(info.name + '\t' + info.tel)
+def print_info(info, company):
+    df = pd.DataFrame([vars(info)])
+    global start_row
+    with pd.ExcelWriter(excel_file, mode='a', if_sheet_exists='overlay') as writer:
+        df.to_excel(writer, startrow=start_row, header=False)
+    start_row = start_row + 1
+    print(info.name + '\t' + info.tel + '\t' + info.human + '\t' + info.email)
 
 if __name__ == '__main__':
+    df = pd.DataFrame([])
+    df.to_excel(excel_file, index=False, header=False)
     path = 'szsm1.xlsx'
     data = pd.read_excel(path, sheet_name='Sheet1')
     modu = Tianyancha()  # 创建天眼查查询类
@@ -32,18 +43,18 @@ if __name__ == '__main__':
             name_fix = name.replace('(', '').replace(')', '').replace('（', '').replace('）', '')
             search_name_fix = base.name.replace('(', '').replace(')', '').replace('（', '').replace('）', '')
             if name_fix == search_name_fix:
-                print_info(base)
+                print_info(base, company)
             else:
                 base2 = modu.search(name)
                 if base == base2:
-                    print_info(base)
+                    print_info(base, company)
                 else:
                     search_name_fix2 = base2.name.replace('(', '').replace(')', '').replace('（', '').replace('）', '')
                     if name_fix == search_name_fix2:
-                        print_info(base2)
+                        print_info(base2, company)
                     else:
                         base3 = modu.search(name)
-                        print_info(base3)
+                        print_info(base3, company)
         except Exception as e:
             print('error')
             print(e)
