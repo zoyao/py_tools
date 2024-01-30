@@ -83,7 +83,7 @@ class Tianyancha:
             self.driver.add_cookie(cookies)
         self.driver.refresh()  # 自动刷新页面，请检查是否已经自动登录账号
 
-    def search(self, name):
+    def search(self, name, company):
         self.driver.get(self.url + f'/search?key={name}')  # 搜索特定企业
         time.sleep(random.uniform(1, 2))
         id_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div.index_header__x2QZ3 > div.index_name__qEdWi > a")
@@ -114,6 +114,6 @@ class Tianyancha:
             email = email_list[0].text
         if len(address_list) > 0:
             address = address_list[0].text
-        return CompanyInfoBase(id, search_name, human, money, create, tel, email, address)
+        return CompanyInfoBase(id, search_name, human, money, create, tel, email, address, company)
 
 

@@ -1,5 +1,9 @@
 class CompanyInfoBase:
-    def __init__(self, id, name, human, money, create, tel, email, address):
+    def __init__(self, id, name, human, money, create, tel, email, address, base):
+        index = 1
+        for value in base:
+            setattr(self, "a_" + str(index), value)
+            index += 1
         self.id = id
         self.name = name
         self.human = human
