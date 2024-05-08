@@ -1,4 +1,3 @@
-import captcha
 import base64
 import requests
 import json
@@ -6,6 +5,7 @@ import time
 import random
 from faker import Faker
 from Crypto.Cipher import AES
+from captcha import Captcha
 
 
 def pkcs7padding(text):
@@ -35,8 +35,10 @@ fake = Faker("zh_CN")
 headers = {
     "Content-Type": "application/json"
 }
+captcha = Captcha()
 
-for i in range(100):
+i = 0
+while i < 100:
     begin = int(round(time.time() * 1000))
     images = requests.post("https://api.jingjia-tech.com/htsec/api/captcha/gen").json()
     captcha_id = images['data']['id']
@@ -67,16 +69,28 @@ for i in range(100):
     }
     valid_result = requests.post("https://api.jingjia-tech.com/htsec/api/captcha/valid",
                                  data=json.dumps(post_json), headers=headers).json()
-    print(valid_result)
-
-    register_json = {
-        "username": aes_encrypt(fake.name(), "P+Rq948CrN3oXN76"),
-        "phone": aes_encrypt(fake.phone_number(), "P+Rq948CrN3oXN76"),
-        "innerSchoolCode": "",
-        "captchaToken": captcha_id,
-        "schoolCode": "4144014063"
-    }
-    register_result = requests.post("https://api.jingjia-tech.com/htsec/api/project/questionnaire/register",
-                                    data=json.dumps(register_json), headers=headers).json()
-    print(register_result)
-    time.sleep(10)
+    if valid_result['code'] == 0:
+        register_json = {
+            "username": aes_encrypt(fake.name(), "P+Rq948CrN3oXN76"),
+            "phone": aes_encrypt(fake.phone_number(), "P+Rq948CrN3oXN76"),
+            "innerSchoolCode": "",
+            "captchaToken": captcha_id,
+            "schoolCode": "4144014063"
+        }
+        register_result = requests.post("https://api.jingjia-tech.com/htsec/api/project/questionnaire/register",
+                                        data=json.dumps(register_json), headers=headers).json()
+        if register_result['code'] == 0:
+            print("register success " + captcha_id)
+            i += 1
+        else:
+            print("register error " + captcha_id)
+            print(register_result)
+        time.sleep(10)
+    else:
+        with open('./images/' + captcha_id + '.png', 'wb') as file:
+            file.write(image_search)
+        with open('./images/' + captcha_id + '.jpg', 'wb') as file:
+            file.write(image)
+        captcha.save_result("./images/" + captcha_id + "result.jpg")
+        print("captcha error " + captcha_id)
+        print(valid_result)
