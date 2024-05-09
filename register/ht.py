@@ -39,7 +39,7 @@ captcha = Captcha()
 
 i = 0
 error = 0
-while i < 100 and error < 100:
+while i < 10 and error < 10:
     try:
         begin = int(round(time.time() * 1000))
         images = requests.post("https://api.jingjia-tech.com/htsec/api/captcha/gen").json()
@@ -88,7 +88,7 @@ while i < 100 and error < 100:
                 print("register error " + captcha_id)
                 print(register_result)
                 error += 1
-            time.sleep(10)
+            time.sleep(30)
         else:
             with open('./images/' + captcha_id + '.png', 'wb') as file:
                 file.write(image_search)
@@ -102,6 +102,6 @@ while i < 100 and error < 100:
     except Exception as e:
         print("unknown error ")
         error += 1
-        time.sleep(3)
+        time.sleep(10)
         continue
 

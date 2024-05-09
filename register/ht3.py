@@ -11,15 +11,15 @@ fake = Faker("zh_CN")
 
 
 async def main():
-    browser = await launch(executablePath='C:\Program Files\Google\Chrome\Application\chrome.exe', headless=True)
+    browser = await launch(executablePath='C:\Program Files\Google\Chrome\Application\chrome.exe', headless=False)
     page = await browser.newPage()
     await page.setViewport({
-        "width": 1000,
+        "width": 600,
         "height": 1000
     })
 
     await page.goto(url)
-    await page.querySelectorAll('iframe')
+    a = await page.querySelectorAll('iframe')
     frame = page.frames[1]
     await frame.waitForSelector('.register-btn')  # 这里可以根据实际情况等待特定的元素或其他条件
     await frame.click('.register-btn')
@@ -33,7 +33,7 @@ async def main():
     await page.keyboard.type("广东科贸职业学院")
 
     await frame.waitForSelector('.n-base-select-option__content')
-    time.sleep(2)
+    # time.sleep(2)
     schools = await frame.querySelectorAll('.n-base-select-option__content')
     await schools[0].hover()
     await page.mouse.down()
