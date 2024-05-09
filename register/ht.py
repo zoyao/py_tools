@@ -38,59 +38,70 @@ headers = {
 captcha = Captcha()
 
 i = 0
-while i < 100:
-    begin = int(round(time.time() * 1000))
-    images = requests.post("https://api.jingjia-tech.com/htsec/api/captcha/gen").json()
-    captcha_id = images['data']['id']
-    image_search_str = images['data']['captcha']['templateImage']
-    image_str = images['data']['captcha']['backgroundImage']
-    backgroundImageWidth = images['data']['captcha']['backgroundImageWidth']
-    backgroundImageHeight = images['data']['captcha']['backgroundImageHeight']
-    templateImageWidth = images['data']['captcha']['templateImageWidth']
-    templateImageHeight = images['data']['captcha']['templateImageHeight']
+error = 0
+while i < 100 and error < 100:
+    try:
+        begin = int(round(time.time() * 1000))
+        images = requests.post("https://api.jingjia-tech.com/htsec/api/captcha/gen").json()
+        captcha_id = images['data']['id']
+        image_search_str = images['data']['captcha']['templateImage']
+        image_str = images['data']['captcha']['backgroundImage']
+        backgroundImageWidth = images['data']['captcha']['backgroundImageWidth']
+        backgroundImageHeight = images['data']['captcha']['backgroundImageHeight']
+        templateImageWidth = images['data']['captcha']['templateImageWidth']
+        templateImageHeight = images['data']['captcha']['templateImageHeight']
 
-    image_search_str = image_search_str[image_search_str.index(',') + 1:]
-    image_str = image_str[image_str.index(',') + 1:]
-    image_search = base64.b64decode(image_search_str)
-    image = base64.b64decode(image_str)
-    trackList = captcha.search_track_list(image_search, image)
+        image_search_str = image_search_str[image_search_str.index(',') + 1:]
+        image_str = image_str[image_str.index(',') + 1:]
+        image_search = base64.b64decode(image_search_str)
+        image = base64.b64decode(image_str)
+        trackList = captcha.search_track_list(image_search, image)
 
-    post_json = {
-        "id": captcha_id,
-        "data": {
-            "bgImageWidth": backgroundImageWidth,
-            "bgImageHeight": backgroundImageHeight,
-            "sliderImageWidth": templateImageWidth,
-            "sliderImageHeight": templateImageHeight,
-            "startSlidingTime": begin,
-            "endSlidingTime": int(round(time.time() * 1000)),
-            "trackList": trackList
+        post_json = {
+            "id": captcha_id,
+            "data": {
+                "bgImageWidth": backgroundImageWidth,
+                "bgImageHeight": backgroundImageHeight,
+                "sliderImageWidth": templateImageWidth,
+                "sliderImageHeight": templateImageHeight,
+                "startSlidingTime": begin,
+                "endSlidingTime": int(round(time.time() * 1000)),
+                "trackList": trackList
+            }
         }
-    }
-    valid_result = requests.post("https://api.jingjia-tech.com/htsec/api/captcha/valid",
-                                 data=json.dumps(post_json), headers=headers).json()
-    if valid_result['code'] == 0:
-        register_json = {
-            "username": aes_encrypt(fake.name(), "P+Rq948CrN3oXN76"),
-            "phone": aes_encrypt(fake.phone_number(), "P+Rq948CrN3oXN76"),
-            "innerSchoolCode": "",
-            "captchaToken": captcha_id,
-            "schoolCode": "4144014063"
-        }
-        register_result = requests.post("https://api.jingjia-tech.com/htsec/api/project/questionnaire/register",
-                                        data=json.dumps(register_json), headers=headers).json()
-        if register_result['code'] == 0:
-            print("register success " + captcha_id)
-            i += 1
+        valid_result = requests.post("https://api.jingjia-tech.com/htsec/api/captcha/valid",
+                                     data=json.dumps(post_json), headers=headers).json()
+        if valid_result['code'] == 0:
+            register_json = {
+                "username": aes_encrypt(fake.name(), "P+Rq948CrN3oXN76"),
+                "phone": aes_encrypt(fake.phone_number(), "P+Rq948CrN3oXN76"),
+                "innerSchoolCode": "",
+                "captchaToken": captcha_id,
+                "schoolCode": "4144014063"
+            }
+            register_result = requests.post("https://api.jingjia-tech.com/htsec/api/project/questionnaire/register",
+                                            data=json.dumps(register_json), headers=headers).json()
+            if register_result['code'] == 0:
+                print("register success " + captcha_id)
+                i += 1
+            else:
+                print("register error " + captcha_id)
+                print(register_result)
+                error += 1
+            time.sleep(10)
         else:
-            print("register error " + captcha_id)
-            print(register_result)
-        time.sleep(10)
-    else:
-        with open('./images/' + captcha_id + '.png', 'wb') as file:
-            file.write(image_search)
-        with open('./images/' + captcha_id + '.jpg', 'wb') as file:
-            file.write(image)
-        captcha.save_result("./images/" + captcha_id + "result.jpg")
-        print("captcha error " + captcha_id)
-        print(valid_result)
+            with open('./images/' + captcha_id + '.png', 'wb') as file:
+                file.write(image_search)
+            with open('./images/' + captcha_id + '.jpg', 'wb') as file:
+                file.write(image)
+            captcha.save_result("./images/" + captcha_id + "result.jpg")
+            print("captcha error " + captcha_id)
+            print(valid_result)
+            error += 1
+            time.sleep(3)
+    except Exception as e:
+        print("unknown error ")
+        error += 1
+        time.sleep(3)
+        continue
+
