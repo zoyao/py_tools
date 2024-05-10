@@ -14,7 +14,7 @@ class Captcha:
         self.is_sleep = is_sleep
         self.result_image = None
 
-    def search_track_list(self, image_search, image):
+    def search(self, image_search, image):
         # 第一次ocr，获取指定文本
         ocr_byte = BytesIO()
         img1 = Image.open(BytesIO(image_search))
@@ -78,10 +78,11 @@ class Captcha:
             y_ex = int((y2 - y1) * 0.3)
             x = random.randint(x1 + x_ex, x2 - x_ex)
             y = random.randint(y1 + y_ex, y2 - y_ex)
-            track_list.append({"x": x, "y": y, "type": "click", "t": int(round(time.time() * 1000)) - begin})
+            track_list.append({'x': x, 'y': y, 'type': 'click', 't': int(round(time.time() * 1000)) - begin})
             cv2.putText(self.result_image, str(i), (x, y), cv2.FONT_HERSHEY_COMPLEX, 2.0,
                         color=(0, 0, 255), thickness=2)
-        return track_list
+        img = Image.open(BytesIO(image))
+        return {'track_list': track_list, 'width': img.width, 'height': img.height}
 
     def save_result(self, save_dir):
         cv2.imwrite(save_dir, self.result_image)

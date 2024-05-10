@@ -13,7 +13,7 @@ captcha = Captcha(is_sleep=False)
 
 def run(playwright: Playwright) -> None:
     try:
-        browser = playwright.chromium.launch(headless=False)
+        browser = playwright.chromium.launch(headless=True)
         context = browser.new_context(
             viewport={'width': 600, 'height': 1000}
         )
@@ -36,18 +36,18 @@ def run(playwright: Playwright) -> None:
         image_str = image_str[image_str.index(',') + 1:]
         image_search = base64.b64decode(image_search_str)
         image = base64.b64decode(image_str)
-        trackList = captcha.search_track_list(image_search, image)
+        captcha_result = captcha.search(image_search, image)
 
         address = page.frame_locator("iframe").locator(".captcha-img img").first.bounding_box()
-
-        for track in trackList:
-            page.mouse.move(address['x'] + (track['x'] * 180 / 360) + random.randint(-100, 100),
-                            address['y'] + (track['y'] * 300 / 590) + random.randint(-200, 200))
+        x_ratio = address['height'] / captcha_result['length']
+        y_ratio = address['width'] / captcha_result['width']
+        for track in captcha_result['track_list']:
+            x_fix = address['x'] + (track['x'] * x_ratio)
+            y_fix = address['y'] + (track['y'] * y_ratio)
+            page.mouse.move(x_fix + random.randint(-100, 100), y_fix + random.randint(-200, 200))
             time.sleep(random.randint(1, 2))
-            page.mouse.move(address['x'] + (track['x'] * 180 / 360),
-                            address['y'] + (track['y'] * 300 / 590))
-            page.mouse.click(address['x'] + (track['x'] * 180 / 360) + random.randint(-10, 10),
-                             address['y'] + (track['y'] * 300 / 590) + random.randint(-10, 10))
+            page.mouse.move(x_fix, y_fix)
+            page.mouse.click(x_fix + random.randint(-10, 10), y_fix + random.randint(-10, 10))
             time.sleep(random.randint(1, 5))
     except Exception:
         pass
@@ -73,3 +73,4 @@ with sync_playwright() as playwright:
         except Exception:
             pass
         time.sleep(random.randint(20, 100))
+

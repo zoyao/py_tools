@@ -18,3 +18,4 @@ ddddocr==1.5.3
 opencv_python==4.9.0.80
 faker==25.0.1
 pycryptodome==3.20.0
+playwright==1.43.0

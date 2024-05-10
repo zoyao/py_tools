@@ -55,7 +55,8 @@ while i < 10 and error < 10:
         image_str = image_str[image_str.index(',') + 1:]
         image_search = base64.b64decode(image_search_str)
         image = base64.b64decode(image_str)
-        trackList = captcha.search_track_list(image_search, image)
+        captcha_result = captcha.search(image_search, image)
+        trackList = captcha_result['track_list']
 
         post_json = {
             "id": captcha_id,
