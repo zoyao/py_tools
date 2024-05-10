@@ -12,7 +12,7 @@ captcha = Captcha(is_sleep=False)
 success = 0
 
 
-def run(pw: Playwright, index: int) -> None:
+def run(pw: Playwright, index: str) -> None:
     try:
         browser = pw.chromium.launch(headless=True)
         context = browser.new_context(
@@ -63,7 +63,7 @@ def run(pw: Playwright, index: int) -> None:
         if '?step=' not in iframe_src:
             global success
             success += 1
-        page.screenshot(path="./results/result_" + str(index) + ".png")
+        page.screenshot(path="./results/result_" + index + ".png")
     except Exception as e:
         print(e)
     finally:
@@ -82,11 +82,12 @@ def run(pw: Playwright, index: int) -> None:
 
 
 with sync_playwright() as playwright:
+    index = str(int(round(time.time() * 1000))) + '_'
     for i in range(3):
+        if i > 0:
+            time.sleep(random.randint(20, 100))
         try:
-            print("total:" + str(i) + "\tsuccess:" + str(success) + "")
-            run(playwright, i)
+            run(playwright, index + str(i))
         except Exception as e:
             print(e)
-        time.sleep(random.randint(20, 100))
-
+        print(index + "\ttotal:" + str(i) + "\tsuccess:" + str(success) + "")
