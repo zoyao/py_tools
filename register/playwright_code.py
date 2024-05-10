@@ -49,6 +49,7 @@ def run(playwright: Playwright) -> None:
             page.mouse.move(x_fix, y_fix)
             page.mouse.click(x_fix + random.randint(-10, 10), y_fix + random.randint(-10, 10))
             time.sleep(random.randint(1, 5))
+        page.screenshot("example.png")
     except Exception:
         pass
     finally:
