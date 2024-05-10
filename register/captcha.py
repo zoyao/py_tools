@@ -5,8 +5,6 @@ from PIL import Image
 from io import BytesIO
 import random
 import time
-# from skimage.feature import match_template
-# result = match_template(img1, img2)
 
 
 class Captcha:
@@ -57,7 +55,7 @@ class Captcha:
         # img1.save(ocr_byte, img1.format)
         # img1.save("test.png")
         # content = ocr_byte.getvalue()
-        img1.show()
+        # img1.show()
         search_words = self.ocr.classification(img1, png_fix=True)
         # 指定第三次ocr的识别范围
         self.ocr.set_ranges(search_words)
@@ -142,12 +140,12 @@ class Captcha:
         cv2.imwrite(save_dir, self.result_image)
 
 
-with open("image.png", 'rb') as f:
-    image_png = f.read()
-with open("image.jpg", 'rb') as f:
-    image_jpg = f.read()
-with open("background.jpg", 'rb') as f:
-    image_bg = f.read()
-captcha = Captcha(False, image_bg)
-captcha.search(image_png, image_jpg)
-captcha.save_result("result.jpg")
+# with open("image.png", 'rb') as f:
+#     image_png = f.read()
+# with open("image.jpg", 'rb') as f:
+#     image_jpg = f.read()
+# with open("background.jpg", 'rb') as f:
+#     image_bg = f.read()
+# captcha = Captcha(False, image_bg)
+# captcha.search(image_png, image_jpg)
+# captcha.save_result("result.jpg")

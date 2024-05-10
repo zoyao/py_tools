@@ -9,26 +9,35 @@ from captcha import Captcha
 
 fake = Faker("zh_CN")
 captcha = Captcha(is_sleep=False)
+success = 0
 
 
-def run(playwright: Playwright) -> None:
+def run(pw: Playwright, index: int) -> None:
     try:
-        browser = playwright.chromium.launch(headless=True)
+        browser = pw.chromium.launch(headless=True)
         context = browser.new_context(
             viewport={'width': 600, 'height': 1000}
         )
         page = context.new_page()
 
         page.goto("https://www.shtjtv.com/web/#/pages/public/webH5?href=%22https%3A%2F%2Fwork.jingjia-tech.com%2Fhtsec%2Fqs%2F%23%2F1770648471997648896%22")
+
+        a = page.locator("iframe").first.get_attribute('src')
+
+
+        time.sleep(random.randint(1, 3))
         page.frame_locator("iframe").get_by_role("button", name="立即注册").click()
-        # page.frame_locator("iframe").get_by_placeholder("请输入姓名").click()
+        time.sleep(random.randint(1, 3))
         page.frame_locator("iframe").get_by_placeholder("请输入姓名").fill(fake.name())
-        # page.frame_locator("iframe").get_by_placeholder("请输入手机号").click()
+        time.sleep(random.randint(1, 3))
         page.frame_locator("iframe").get_by_placeholder("请输入手机号").fill(fake.phone_number())
-        # page.frame_locator("iframe").locator("form div").filter(has_text="学校 *请输入学校名称").get_by_role("textbox").click()
+        time.sleep(random.randint(1, 3))
         page.frame_locator("iframe").locator("form div").filter(has_text="学校 *请输入学校名称").get_by_role("textbox").fill("广东科贸")
+        time.sleep(random.randint(1, 3))
         page.frame_locator("iframe").get_by_text("广东科贸职业学院").first.click()
+        time.sleep(random.randint(1, 3))
         page.frame_locator("iframe").get_by_role("button", name="注册，并开始答题").click()
+        time.sleep(random.randint(1, 3))
 
         image_search_str = page.frame_locator("iframe").locator(".captcha-tip img").first.get_attribute('src')
         image_str = page.frame_locator("iframe").locator(".captcha-img img").first.get_attribute('src')
@@ -39,7 +48,7 @@ def run(playwright: Playwright) -> None:
         captcha_result = captcha.search(image_search, image)
 
         address = page.frame_locator("iframe").locator(".captcha-img img").first.bounding_box()
-        x_ratio = address['height'] / captcha_result['length']
+        x_ratio = address['height'] / captcha_result['height']
         y_ratio = address['width'] / captcha_result['width']
         for track in captcha_result['track_list']:
             x_fix = address['x'] + (track['x'] * x_ratio)
@@ -49,29 +58,35 @@ def run(playwright: Playwright) -> None:
             page.mouse.move(x_fix, y_fix)
             page.mouse.click(x_fix + random.randint(-10, 10), y_fix + random.randint(-10, 10))
             time.sleep(random.randint(1, 5))
-        page.screenshot("example.png")
-    except Exception:
-        pass
+
+        iframe_src = page.locator("iframe").first.get_attribute('src')
+        if '?step=' not in iframe_src:
+            global success
+            success += 1
+        page.screenshot(path="./results/result_" + str(index) + ".png")
+    except Exception as e:
+        print(e)
     finally:
         if page:
             try:
                 page.close()
-            except Exception:
-                pass
+            except Exception as e:
+                print(e)
         if context:
             try:
                 context.close()
-            except Exception:
-                pass
+            except Exception as e:
+                print(e)
         if browser:
             browser.close()
 
 
 with sync_playwright() as playwright:
-    for i in range(20):
+    for i in range(3):
         try:
-            run(playwright)
-        except Exception:
-            pass
+            print("total:" + str(i) + "\tsuccess:" + str(success) + "")
+            run(playwright, i)
+        except Exception as e:
+            print(e)
         time.sleep(random.randint(20, 100))
 
