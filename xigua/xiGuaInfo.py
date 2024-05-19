@@ -1,0 +1,76 @@
+class XiGuaInfo:
+    def __init__(self, d=None):
+        if d is not None:
+            for key, value in d.items():
+                setattr(self, key, str(value))
+
+    # def __init__(self):
+    #     self.Area = None
+    #     self.Attention = None
+    #     self.BizCardCount30Day = None
+    #     self.BizChildIndustry = None
+    #     self.BizChildIndustryDesc = None
+    #     self.BizHistoryArticleEncryptKey = None
+    #     self.BizId = None
+    #     self.BizIdKey = None
+    #     self.BizIndustry = None
+    #     self.BizIndustryDesc = None
+    #     self.BizName = None
+    #     self.BizScoreInfo = None
+    #     self.BizTag = None
+    #     self.BrandInfoCount = None
+    #     self.BrandInfoList = None
+    #     self.CollectInfo = None
+    #     self.CollectedCount = None
+    #     self.Desc = None
+    #     self.Fans = None
+    #     self.FansDesc = None
+    #     self.FansUpdateTime = None
+    #     self.FirstAvgComment = None
+    #     self.FirstAvgLike = None
+    #     self.FirstAvgPraise = None
+    #     self.FirstAvgRead = None
+    #     self.FirstAvgReadDesc = None
+    #     self.FirstAvgReadUpDateTime = None
+    #     self.Gender = None
+    #     self.GuaZhiShu = None
+    #     self.IsChannalsBiz = None
+    #     self.IsCheatBiz = None
+    #     self.IsCheatReported = None
+    #     self.IsCollected = None
+    #     self.IsCompared = None
+    #     self.IsHuXuan = None
+    #     self.IsLiked = None
+    #     self.IsLiveVideoBiz = None
+    #     self.IsOriginal = None
+    #     self.IsPersonalBiz = None
+    #     self.IsReminded = None
+    #     self.IsRiskBiz = None
+    #     self.IsServiceBiz = None
+    #     self.IsSubscriptionBiz = None
+    #     self.IsWeixinAuth = None
+    #     self.IsXiguaAuth = None
+    #     self.LastPubTime = None
+    #     self.LaunchPrice = None
+    #     self.LikeCount = None
+    #     self.LikeCountDesc = None
+    #     self.Logo = None
+    #     self.MiniAppInfoCount = None
+    #     self.PartialMiniAppInfos = None
+    #     self.QrCode = None
+    #     self.RankCount = None
+    #     self.RankInfoDetail = None
+    #     self.ReadRealScore = None
+    #     self.RecentArticleCount = None
+    #     self.RegisterPeriod = None
+    #     self.RelationBrandList = None
+    #     self.Remark = None
+    #     self.SecondAvgRead = None
+    #     self.SimBizCount = None
+    #     self.StatisticsRemindMessage = None
+    #     self.Tags = None
+    #     self.ThirdMoreAvgRead = None
+    #     self.TrackingId = None
+    #     self.UpdateTime = None
+    #     self.WechatId = None
+    #     self.WeiXinAuthInfo = None
