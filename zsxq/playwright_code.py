@@ -19,12 +19,10 @@ def run(pw: Playwright) -> None:
         conn = pymysql.connect(host="", port=3663, user='root', passwd='', db='', charset='utf8mb4')
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         while True:
-            time.sleep(random.randint(1, 3))
             cursor.execute("INSERT INTO dy_zsxq_check () VALUES ()")
             last_id = str(cursor.lastrowid)
             conn.commit()
 
-            last_id = '454548818428'
             url = 'https://public.zsxq.com/groups/' + last_id + '.html'
             page.goto(url)
             divs = page.locator("main>div").all()
