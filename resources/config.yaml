@@ -19,8 +19,13 @@ check:
     list:
       - user: zoyao
         keywords:
-          - 饮用水
-          - 矿泉水
-          - 八喜
-          - 眼镜
-          - 评论
+          - 空调
+          - 电视
+mairui:
+  licence: licence
+mysql:
+  host: host
+  port: port
+  user: user
+  password: password
+  db: db

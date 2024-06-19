@@ -126,10 +126,10 @@ class Captcha:
                 time.sleep(random.randint(4, 7))
             bbox = bboxes[point]
             x1, y1, x2, y2 = bbox
-            x_ex = int((x2 - x1) * 0.3)
-            y_ex = int((y2 - y1) * 0.3)
-            x = random.randint(x1 + x_ex, x2 - x_ex)
-            y = random.randint(y1 + y_ex, y2 - y_ex)
+            # x_ex = int((x2 - x1) * 0.3)
+            # y_ex = int((y2 - y1) * 0.3)
+            x = int((x1 + x2) / 2)
+            y = int((y1 + y2) / 2)
             track_list.append({'x': x, 'y': y, 'type': 'click', 't': int(round(time.time() * 1000)) - begin})
             cv2.putText(self.result_image, str(i), (x, y), cv2.FONT_HERSHEY_COMPLEX, 2.0,
                         color=(0, 0, 255), thickness=2)

@@ -1,12 +1,15 @@
-import random
-import time
-
 import pymysql
-
+from config.config import conf
 
 from playwright.sync_api import Playwright, sync_playwright, expect
 
-
+config = conf().get_config()
+licence = config['mairui']['licence']
+mysql_host = config['mysql']['host']
+mysql_port = config['mysql']['port']
+mysql_user = config['mysql']['user']
+mysql_password = config['mysql']['password']
+mysql_db = config['mysql']['db']
 
 def run(pw: Playwright) -> None:
     try:
@@ -16,7 +19,7 @@ def run(pw: Playwright) -> None:
         )
 
         page = context.new_page()
-        conn = pymysql.connect(host="", port=3663, user='root', passwd='', db='', charset='utf8mb4')
+        conn = pymysql.connect(host=mysql_host, port=mysql_port, user=mysql_user, passwd=mysql_password, db=mysql_db, charset='utf8mb4')
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         while True:
             cursor.execute("INSERT INTO dy_zsxq_check () VALUES ()")

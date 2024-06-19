@@ -56,7 +56,7 @@ def run(pw: Playwright, index: str) -> None:
             page.mouse.move(x_fix + random.randint(-100, 100), y_fix + random.randint(-200, 200))
             time.sleep(random.randint(1, 2))
             page.mouse.move(x_fix, y_fix)
-            page.mouse.click(x_fix + random.randint(-10, 10), y_fix + random.randint(-10, 10))
+            page.mouse.click(x_fix + random.randint(-5, 5), y_fix + random.randint(-5, 5))
             time.sleep(random.randint(1, 5))
 
         iframe_src = page.locator("iframe").first.get_attribute('src')
@@ -83,7 +83,7 @@ def run(pw: Playwright, index: str) -> None:
 
 with sync_playwright() as playwright:
     index = str(int(round(time.time() * 1000))) + '_'
-    for i in range(3):
+    for i in range(20):
         if i > 0:
             time.sleep(random.randint(20, 100))
         try:

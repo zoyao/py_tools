@@ -3,9 +3,9 @@ import yaml
 
 
 class conf(object):
-    def __init__(self, base_dir='.'):
-        self.base_dir = base_dir
-        with open(os.path.expanduser(base_dir + "/resources/config.yaml"), "r", encoding='utf-8') as config:
+    def __init__(self):
+        self.base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        with open(os.path.expanduser(self.base_dir + "/resources/config.yaml"), "r", encoding='utf-8') as config:
             self.cfg = yaml.safe_load(config)
 
     def reload(self):
@@ -29,3 +29,6 @@ class conf(object):
 
     def get_lukou_password(self):
         return str(self.cfg['lukou']['password'])
+
+    def get_config(self):
+        return self.cfg
