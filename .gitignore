@@ -3,3 +3,4 @@
 logs/info.log
 *.log
 /register/results
+/logs
