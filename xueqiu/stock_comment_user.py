@@ -53,8 +53,9 @@ async def run(pw: Playwright) -> bool:
                     user_name = await item.inner_html()
                     user_url = await item.get_attribute('href')
                     user_id = await item.get_attribute('data-tooltip')
-                    if isinstance(user_id, str):
+                    if not user_id.isdigit():
                         continue
+                    print(code + "_" + str(i + 1) + "_" + str(user_id) + "_" + user_name)
                     insert_query = """
                             INSERT INTO bs_xueqiu_user
                             (user_id, user_name, user_url)
@@ -122,7 +123,7 @@ async def main():
                                charset='utf8mb4')
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         select_query = """
-            select stock_type, stock_code from bs_stock where status_xueqiu = 0 limit 100
+            select stock_type, stock_code from bs_stock where status_xueqiu = 0
         """
         cursor.execute(select_query)
         global results
