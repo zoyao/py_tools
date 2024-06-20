@@ -4,7 +4,7 @@ import asyncio
 
 from playwright.async_api import Playwright, async_playwright
 
-max_threads = 5
+max_threads = 10
 config = conf().get_config()
 licence = config['mairui']['licence']
 mysql_host = config['mysql']['host']
@@ -187,15 +187,8 @@ async def main():
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         select_query = """
             select user_id, user_url from bs_xueqiu_user 
-            where (update_time is null) 
-            or (count_follow = 0 
-            and count_fans = 0
-            and count_post = 0
-            and count_column = 0
-            and column_name is null
-            and address is null
-            and address_ip is null
-            and introduction is null)
+            where update_time is null
+            or address_ip is null
         """
         cursor.execute(select_query)
         global results

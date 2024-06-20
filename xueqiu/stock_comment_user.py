@@ -5,7 +5,7 @@ import asyncio
 
 from playwright.async_api import Playwright, async_playwright
 
-max_threads = 5
+max_threads = 10
 max_pages = 10
 config = conf().get_config()
 licence = config['mairui']['licence']
@@ -47,6 +47,12 @@ async def run(pw: Playwright) -> bool:
                 await close.click()
 
             for i in range(max_pages):
+                null_num = await page.locator('#app > div.container > div.container-404 > div.container-404__bg').count()
+                if null_num > 0:
+                    break
+                empty_num = await page.locator('div.empty > div.isEmpty').count()
+                if empty_num > 0:
+                    break
                 await page.wait_for_selector('//*[@class="timeline__item__info"]/div/a[1]')
                 list = await page.locator('//*[@class="timeline__item__info"]/div/a[1]').all()
                 for item in list:
@@ -66,7 +72,11 @@ async def run(pw: Playwright) -> bool:
                     values = (user_id, user_name, user_url)
                     cursor.execute(insert_query, values)
                     conn.commit()
-                await page.locator('a.pagination__next').click()
+                next_num = await page.locator('a.pagination__next[style*="display: none;"]').count()
+                if next_num > 0:
+                    break
+                else:
+                    await page.locator('a.pagination__next').click()
             insert_query = """
                     update bs_stock
                     set status_xueqiu = 1
