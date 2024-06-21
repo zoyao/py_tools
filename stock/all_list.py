@@ -19,10 +19,12 @@ if response.status_code == 200:
         insert_query = """
                         INSERT INTO bs_stock
                         (stock_code, stock_name, stock_type, update_time)
-                        VALUES (%s, %s, %s, CURRENT_TIMESTAMP)
+                        VALUES (%s, %s, 0, CURRENT_TIMESTAMP)
                         ON DUPLICATE KEY UPDATE
-                        stock_name = VALUES(stock_name)
+                        stock_name = VALUES(stock_name),
+                        stock_type = VALUES(stock_type)
                         """
-        values = (stock['dm'], stock['mc'], stock['jys'])
+        values = (stock['jys'] + stock['dm'], stock['mc'])
+        print(values)
         cursor.execute(insert_query, values)
         conn.commit()
