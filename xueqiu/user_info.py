@@ -13,9 +13,11 @@ mysql_user = config['mysql']['user']
 mysql_password = config['mysql']['password']
 mysql_db = config['mysql']['db']
 results = []
+error = 0
 
 
 async def run(pw: Playwright) -> bool:
+    global error
     try:
         browser = await pw.chromium.launch(headless=True)
         context = await browser.new_context(
@@ -128,8 +130,12 @@ async def run(pw: Playwright) -> bool:
             print(values)
             cursor.execute(insert_query, values)
             conn.commit()
+            if count_follow > 0 or count_fans > 0 or count_post > 0 or count_column > 0 or column_name is not None or \
+                    address is not None or address_ip is not None or introduction is not None:
+                error = 0
     except Exception as e:
         print(e)
+        error += 1
     finally:
         try:
             if cursor:
@@ -178,6 +184,8 @@ async def start():
         flag = True
         while flag:
             flag = await run(playwright)
+            if error > 10:
+                break
 
 
 async def main():

@@ -21,7 +21,7 @@ session.get('https://xueqiu.com/hq/detail?market=CN&first_name=0&second_name=0&t
 while True:
     index += 1
     url = 'https://stock.xueqiu.com/v5/stock/screener/quote/list.json?page=' + str(index) + '&size=' + \
-            str(max_size) + '&order=desc&order_by=percent&market=CN&type=sh_sz'
+            str(max_size) + '&order=desc&order_by=percent&market=US&type=us'
     response = session.get(url)
     conn = pymysql.connect(host=mysql_host, port=mysql_port, user=mysql_user, passwd=mysql_password, db=mysql_db,
                            charset='utf8mb4')
@@ -47,7 +47,7 @@ while True:
                                     """
                 flag = True
                 insert_query += """
-                             (%s, %s, 0, CURRENT_TIMESTAMP)
+                             (%s, %s, 2, CURRENT_TIMESTAMP)
                                 """
             insert_query += """
                             ON DUPLICATE KEY UPDATE

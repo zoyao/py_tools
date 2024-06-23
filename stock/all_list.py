@@ -21,8 +21,7 @@ if response.status_code == 200:
                         (stock_code, stock_name, stock_type, update_time)
                         VALUES (%s, %s, 0, CURRENT_TIMESTAMP)
                         ON DUPLICATE KEY UPDATE
-                        stock_name = VALUES(stock_name),
-                        stock_type = VALUES(stock_type)
+                        stock_name = VALUES(stock_name)
                         """
         values = (stock['jys'] + stock['dm'], stock['mc'])
         print(values)
