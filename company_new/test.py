@@ -3,6 +3,8 @@
 # author： zhizhi
 # datetime： 2023-08-15 9:33 
 # ide： PyCharm
+import time
+
 import numpy as np
 
 from tianyancha import Tianyancha
@@ -18,13 +20,13 @@ def print_info(info, status):
     with pd.ExcelWriter(excel_file, mode='a', if_sheet_exists='overlay') as writer:
         df.to_excel(writer, startrow=start_row, header=False)
     start_row = start_row + 1
-    print(info.name + '\t' + info.tel + '\t' + info.human + '\t' + info.email + '\t' + str(status))
+    print(info.name + '\t' + info.tel + '\t' + info.human + '\t' + info.email + '\t' + info.address + '\t' + str(status))
 
 if __name__ == '__main__':
     df = pd.DataFrame([])
     df.to_excel(excel_file, index=False, header=False)
-    path = 'szsm.xlsx'
-    data = pd.read_excel(path, sheet_name='Sheet1')
+    path = 'gdgx.xlsx'
+    data = pd.read_excel(path, sheet_name='Table1')
     modu = Tianyancha()  # 创建天眼查查询类
     flag = True
     for company in data.values:
@@ -35,7 +37,10 @@ if __name__ == '__main__':
                 modu.int_home()
             flag = False
             name = company[1]
+            if name == '企业名称':
+                continue
             name.replace('*', '')
+            time.sleep(2)
             base = modu.search(name, company)
             if base is None:
                 print('error')

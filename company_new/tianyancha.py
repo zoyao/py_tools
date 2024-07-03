@@ -91,10 +91,9 @@ class Tianyancha:
         human_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div.index_info-row__xbtyD.index_line-row__R3mCi > div.index_info-col__UVcZb.index_wider__gQok0 > a")
         money_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div.index_info-row__xbtyD.index_line-row__R3mCi > div.index_info-col__UVcZb.index_narrow__QeZfV > span")
         create_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div.index_info-row__xbtyD.index_line-row__R3mCi > div:nth-child(3) > span")
-        tel_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(4) > div:nth-child(1) > span:nth-child(2) > span")
-        email_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(4) > div:nth-child(2) > span:nth-child(2)")
-        address_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(5) > div > span:nth-child(2)")
-
+        tel_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(5) > div:nth-child(1) > span.index_value__Pl0Nh")
+        email_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(5) > div:nth-child(2) > span:nth-child(2)")
+        address_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(6) > div")
         if len(id_list) <= 0:
             return None
 
@@ -110,10 +109,28 @@ class Tianyancha:
             create = create_list[0].text
         if len(tel_list) > 0:
             tel = tel_list[0].text
+            tel = tel.split('更多')[0]
+        if len(tel) < 7:
+            tel_list = self.driver.find_elements(By.CSS_SELECTOR,
+                                                 "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(4) > div:nth-child(1) > span.index_value__Pl0Nh")
+            if len(tel_list) > 0:
+                tel = tel_list[0].text
+                tel = tel.split('更多')[0]
         if len(email_list) > 0:
             email = email_list[0].text
+        if email.find('@') < 0:
+            email_list = self.driver.find_elements(By.CSS_SELECTOR,
+                                                   "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(4) > div:nth-child(2) > span:nth-child(2)")
+            if len(email_list) > 0:
+                email = email_list[0].text
         if len(address_list) > 0:
             address = address_list[0].text
+        if address.find('地址') < 10:
+            address_list = self.driver.find_elements(By.CSS_SELECTOR,
+                                                     "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(5) > div")
+            if len(address_list) > 0:
+                address = address_list[0].text
+
         return CompanyInfoBase(id, search_name, human, money, create, tel, email, address, company)
 
 
