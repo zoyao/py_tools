@@ -36,11 +36,12 @@ if __name__ == '__main__':
                 modu.int_driver()  # 初始化浏览器设置
                 modu.int_home()
             flag = False
+            if len(company) > 5 and company[4] is not None and isinstance(company[4], str):
+                continue
             name = company[1]
             if name == '企业名称':
                 continue
             name.replace('*', '')
-            time.sleep(2)
             base = modu.search(name, company)
             if base is None:
                 print('error')

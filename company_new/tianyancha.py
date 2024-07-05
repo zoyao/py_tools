@@ -36,7 +36,7 @@ class Tianyancha:
         self.options.add_argument(
             'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
             'Chrome/94.0.4606.71 Safari/537.36')  # 添加请求头
-        self.options.add_argument('headless')  # 设置后台运行
+        # self.options.add_argument('headless')  # 设置后台运行
         self.options.add_argument('window-size=1920x1080')  # 设置浏览器显示大小
         self.options.add_argument('start-maximized')  # 最大显示
         self.options.add_argument('--disable-blink-features=AutomationControlled')  # 避免被检测
@@ -57,7 +57,7 @@ class Tianyancha:
             获取企业的主页面
         """
         self.driver.get(self.url)
-        time.sleep(1)
+        time.sleep(2)
         self.driver.delete_all_cookies()
         self.add_cookies()  # 加载cookies
         self.driver.maximize_window()  # 最大化浏览器窗口
@@ -87,13 +87,19 @@ class Tianyancha:
         self.driver.get(self.url + f'/search?key={name}')  # 搜索特定企业
         time.sleep(random.uniform(1, 2))
         id_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div.index_header__x2QZ3 > div.index_name__qEdWi > a")
+        if len(id_list) <= 0:
+            pass
+
+        id_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div.index_header__x2QZ3 > div.index_name__qEdWi > a")
         search_name_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div.index_header__x2QZ3 > div.index_name__qEdWi > a > span")
-        human_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div.index_info-row__xbtyD.index_line-row__R3mCi > div.index_info-col__UVcZb.index_wider__gQok0 > a")
-        money_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div.index_info-row__xbtyD.index_line-row__R3mCi > div.index_info-col__UVcZb.index_narrow__QeZfV > span")
-        create_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div.index_info-row__xbtyD.index_line-row__R3mCi > div:nth-child(3) > span")
-        tel_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(5) > div:nth-child(1) > span.index_value__Pl0Nh")
-        email_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(5) > div:nth-child(2) > span:nth-child(2)")
-        address_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(6) > div")
+        # human_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div.index_info-row__xbtyD.index_line-row__R3mCi > div.index_info-col__UVcZb.index_wider__gQok0 > a")
+        # money_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div.index_info-row__xbtyD.index_line-row__R3mCi > div.index_info-col__UVcZb.index_narrow__QeZfV > span")
+        # create_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div.index_info-row__xbtyD.index_line-row__R3mCi > div:nth-child(3) > span")
+        # tel_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(5) > div:nth-child(1)")
+        # email_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(5) > div:nth-child(2)")
+        # address_list = self.driver.find_elements(By.CSS_SELECTOR, "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(6) > div")
+        all_list = self.driver.find_elements(By.CSS_SELECTOR, '#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div:nth-child(1) > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div > div')
+
         if len(id_list) <= 0:
             return None
 
@@ -101,35 +107,23 @@ class Tianyancha:
         search_name, human, money, create, tel, email, address = '暂无数据', '暂无数据', '暂无数据', '暂无数据', '暂无数据', '暂无数据', '暂无数据'
         if len(search_name_list) > 0:
             search_name = search_name_list[0].text
-        if len(human_list) > 0:
-            human = human_list[0].text
-        if len(money_list) > 0:
-            money = money_list[0].text
-        if len(create_list) > 0:
-            create = create_list[0].text
-        if len(tel_list) > 0:
-            tel = tel_list[0].text
-            tel = tel.split('更多')[0]
-        if len(tel) < 7:
-            tel_list = self.driver.find_elements(By.CSS_SELECTOR,
-                                                 "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(4) > div:nth-child(1) > span.index_value__Pl0Nh")
-            if len(tel_list) > 0:
-                tel = tel_list[0].text
-                tel = tel.split('更多')[0]
-        if len(email_list) > 0:
-            email = email_list[0].text
-        if email.find('@') < 0:
-            email_list = self.driver.find_elements(By.CSS_SELECTOR,
-                                                   "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(4) > div:nth-child(2) > span:nth-child(2)")
-            if len(email_list) > 0:
-                email = email_list[0].text
-        if len(address_list) > 0:
-            address = address_list[0].text
-        if address.find('地址') < 10:
-            address_list = self.driver.find_elements(By.CSS_SELECTOR,
-                                                     "#page-container > div > div.index_search-main__4nIOp > section > main > div.index_search-list-wrap__wi3T0 > div.index_list-wrap___axcs > div > div > div.index_search-item__W7iG_ > div.index_search-item-center__Q2ai5 > div:nth-child(5) > div")
-            if len(address_list) > 0:
-                address = address_list[0].text
+
+        for item in all_list:
+            detail = item.text
+            if detail is not None and len(detail) > 3:
+                detail = detail.split('更多')[0]
+                if detail.find('法定代表人：') >= 0:
+                    human = detail.replace('法定代表人：', '')
+                elif detail.find('注册资本：') >= 0:
+                    money = detail.replace('注册资本：', '')
+                elif detail.find('成立日期：') >= 0:
+                    create = detail.replace('成立日期：', '')
+                elif detail.find('电话：') >= 0:
+                    tel = detail.replace('电话：', '')
+                elif detail.find('邮箱：') >= 0:
+                    email = detail.replace('邮箱：', '')
+                elif detail.find('地址：') >= 0:
+                    address = detail.replace('地址：', '')
 
         return CompanyInfoBase(id, search_name, human, money, create, tel, email, address, company)
 
