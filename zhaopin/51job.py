@@ -9,7 +9,7 @@ urls = ['https://we.51job.com/pc/search?jobArea=030200&keyword=', 'https://we.51
 domain = 'https://jobs.51job.com/job/'
 
 
-def run(pw: Playwright, info: str, job_name_search: list, job_name_ignore: list, company: str):
+def run(pw: Playwright, info: str, job_name_search: list, job_name_ignore: list, company: list, company_ignore: list):
     browser = pw.chromium.launch(headless=False)
     context = browser.new_context(
         viewport={'width': 600, 'height': 1000}

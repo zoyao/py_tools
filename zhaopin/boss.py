@@ -7,7 +7,7 @@ urls = ['https://www.zhipin.com/web/geek/job?city=101280100&query=', 'https://ww
 domain = 'https://www.zhipin.com'
 
 
-def run(pw: Playwright, info: str, job_name_search: list, job_name_ignore: list, company: str):
+def run(pw: Playwright, info: str, job_name_search: list, job_name_ignore: list, company: list, company_ignore: list):
     browser = pw.chromium.launch(headless=False)
     context = browser.new_context(
         viewport={'width': 600, 'height': 1000}
