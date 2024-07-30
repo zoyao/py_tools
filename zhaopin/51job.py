@@ -1,10 +1,12 @@
 import time
 
 from playwright.sync_api import Playwright, sync_playwright
+import json
 from all import info, job_name_search, job_name_ignore, company, company_ignore
 
-urls = ['https://www.zhipin.com/web/geek/job?city=101280100&query=', 'https://www.zhipin.com/web/geek/job?city=101280800&query=']
-domain = 'https://www.zhipin.com'
+
+urls = ['https://we.51job.com/pc/search?jobArea=030200&keyword=', 'https://we.51job.com/pc/search?jobArea=030600&keyword=']
+domain = 'https://jobs.51job.com/job/'
 
 
 def run(pw: Playwright, info: str, job_name_search: list, job_name_ignore: list, company: str):
@@ -21,24 +23,23 @@ def run(pw: Playwright, info: str, job_name_search: list, job_name_ignore: list,
     job_list_no_ingore = []
 
     for url in urls:
+        page.goto(url + info)
         for i in range(50):
-            page.goto(url + info + '&page=' + str(i + 1))
             for j in range(10):
-                list = page.locator('#wrap > div.page-job-wrapper > div.page-job-inner > div > div.job-list-wrapper > div.search-job-result > ul > li > div.job-card-body.clearfix').all()
+                list = page.locator('div.joblist > div.joblist-item > div > div').all()
                 if len(list) < 10:
                     time.sleep(1)
                 else:
                     break
             for item in list:
-                job_name = item.locator('div.job-title.clearfix > span.job-name').inner_text()
-                address = item.locator('a > div.job-title.clearfix > span.job-area-wrapper > span.job-area').inner_text()
-                company_name = item.locator('div > div.company-info > h3 > a').inner_text()
-                salary = item.locator('a > div.job-info.clearfix > span.salary').inner_text()
-                tag = item.locator('a > div.job-info.clearfix > ul').inner_text().replace('\n', ' ')
-                for job_urls in item.locator('a.job-card-left').all():
-                    job_url = domain + job_urls.get_attribute('href')
-                    if '/job_detail/' in job_url:
-                        break
+                job_name = item.locator('div.joblist-item-top > span.jname').inner_text()
+                address = item.locator('div.joblist-item-bot > div.br > div.area > div').inner_text()
+                company_name = item.locator('div.joblist-item-bot > div.bl > a.cname').inner_text()
+                salary = item.locator('div.joblist-item-top > span.sal').inner_text()
+                tag = ''
+                sensorsdata = item.get_attribute("sensorsdata")
+                sensorsdata_json = json.loads(sensorsdata)
+                job_url = domain + sensorsdata_json['jobId'] + '.html'
                 company_flag = False
                 if (company is None):
                     company_flag = True
@@ -75,6 +76,13 @@ def run(pw: Playwright, info: str, job_name_search: list, job_name_ignore: list,
                     if job_name_flag:
                         print('疑似\t' + text)
                         job_list_no_ingore.append(text)
+            btn_list = page.locator('div.bottom-page > div > div.pageation > div > button.btn-next').all()
+            if len(btn_list) > 0:
+                btn = btn_list[0]
+                if not btn.is_disabled():
+                    btn.click()
+            else:
+                break
             time.sleep(2)
     print('匹配岗位：')
     for job in job_list:
