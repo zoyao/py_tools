@@ -1,9 +1,16 @@
+import time
+
 import pymysql
 from config.config import conf
 
 from playwright.sync_api import Playwright, sync_playwright, expect
 
-keyword = '市场'
+# keywords = ['金融', '市场', '财经', '股市', 'a股', '大a', '宝妈', '程序员', '大数据', '分析', '理财', '投资', '产业', '基金',
+#             '创业', '职场', 'it', '大厂', '期货', '读书', '个人成长', '规划', '职业', '教育', '技能', '婚姻', '开发', '编程',
+#             '币圈', '美股', '虚拟', '技术', '银行', '环球']
+keywords = ['大a', '产业', '基金',
+            '个人成长', '职业', '教育', '技能', '婚姻', '开发', '编程',
+            '币圈', '美股', '虚拟', '技术', '银行', '环球']
 first = 1
 last = -1
 site = 'https://public.zsxq.com'
@@ -16,7 +23,7 @@ mysql_user = config['mysql']['user']
 mysql_password = config['mysql']['password']
 mysql_db = config['mysql']['db']
 
-def run(pw: Playwright) -> None:
+def run(pw: Playwright, keyword: str) -> None:
     try:
         browser = pw.chromium.launch(headless=False)
         context = browser.new_context(
@@ -31,7 +38,8 @@ def run(pw: Playwright) -> None:
             url = 'https://www.bing.com/search?q=' + keyword + '+site:' + site + '&first=' + str(first) + '&FORM=PORE'
             print(url)
             page.goto(url)
-            list = page.locator("#b_results>.b_algo>h2>a").all()
+            time.sleep(5)
+            list = page.locator("ol#b_results>li.b_algo>h2>a").all()
             id_list = []
             for item in list:
                 url = item.get_attribute('href')
@@ -166,7 +174,10 @@ def run(pw: Playwright) -> None:
 with sync_playwright() as playwright:
     while run_flag:
         try:
-            run(playwright)
+            for key in keywords:
+                first = 1
+                print(key)
+                run(playwright, key)
             break
         except Exception as e:
             print(e)
