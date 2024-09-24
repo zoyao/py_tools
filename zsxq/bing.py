@@ -7,11 +7,12 @@ from playwright.sync_api import Playwright, sync_playwright, expect
 
 # keywords = ['金融', '市场', '财经', '股市', 'a股', '大a', '宝妈', '程序员', '大数据', '分析', '理财', '投资', '产业', '基金',
 #             '创业', '职场', 'it', '大厂', '期货', '读书', '个人成长', '规划', '职业', '教育', '技能', '婚姻', '开发', '编程',
-#             '币圈', '美股', '虚拟', '技术', '银行', '环球']
-keywords = ['大a', '产业', '基金',
-            '个人成长', '职业', '教育', '技能', '婚姻', '开发', '编程',
-            '币圈', '美股', '虚拟', '技术', '银行', '环球']
-first = 1
+#             '币圈', '美股', '虚拟', '技术', '银行', '环球', 'ai', '地产', '能源', '保险', '互联网', 'web3', '货币', '余额宝',
+#             '固收', '物联网', '元宇宙', '中东', '华为', '苹果', '数码', '摄影', '芯片', '光刻机', '封测', '消费', '电子', '运维',
+#             '房贷', '服务器', '机器人', '智能', '股指', '期权', '阿里', '腾讯', '律所', '四大', 'gpt', '启发', '算法', '985',
+#             'QS']
+keywords = ['机器人', '启发']
+first = 369
 last = -1
 site = 'https://public.zsxq.com'
 run_flag = True
@@ -44,10 +45,14 @@ def run(pw: Playwright, keyword: str) -> None:
             for item in list:
                 url = item.get_attribute('href')
                 if url.startswith('https://public.zsxq.com/groups/'):
-                    last_id = (url.replace('https://public.zsxq.com/groups/', '')
-                               .replace('.html', '').replace('?s=bd&v=1', ''))
-                    last_id = last_id.split('?')[0]
-                    id_list.append(last_id)
+                    last_id = url.replace('https://public.zsxq.com/groups/', '')
+                    digit_id = ''
+                    for id_key in last_id:
+                        if id_key.isdecimal():
+                            digit_id = digit_id + id_key
+                        else:
+                            break
+                    id_list.append(digit_id)
                 else:
                     id_list.append(None)
             if len(id_list) <= 0 or 0 < last <= first:
@@ -175,9 +180,9 @@ with sync_playwright() as playwright:
     while run_flag:
         try:
             for key in keywords:
-                first = 1
                 print(key)
                 run(playwright, key)
+                first = 1
             break
         except Exception as e:
             print(e)
