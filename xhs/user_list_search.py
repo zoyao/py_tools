@@ -5,7 +5,7 @@ from config.config import conf
 
 from playwright.sync_api import Playwright, sync_playwright, expect
 
-keywords = ['财经', '股市']
+keywords = ['股票', '基金', '私募']
 page_max = 50
 url = 'https://www.xiaohongshu.com/search_result?source=web_explore_feed&keyword='
 run_flag = True
@@ -38,7 +38,14 @@ def run(pw: Playwright) -> None:
                                 "div.reds-sticky-box > div > div > div.content-container > button.tab").all()
             for tab in tabs:
                 tab.click()
-                size = len(page.locator("div.footer>div.author-wrapper>a").all())
+                user_list = set()
+                list_new = page.locator("div.footer>div.author-wrapper>a").all()
+                if len(list_new) > 0:
+                    for new in list_new:
+                        user_href = new.get_attribute('href')
+                        user_id = user_href.replace('/user/profile/', '').split('?')[0]
+                        user_list.add(user_id)
+                size = len(user_list)
                 error_num = 0
                 for i in range(page_max):
                     # 光标移动至滚动条所在框中
@@ -46,17 +53,20 @@ def run(pw: Playwright) -> None:
                     # 滚动鼠标 , 参数给一个较大值，以保证直接移动至最后
                     page.mouse.wheel(0, 10000)
                     time.sleep(1)
-                    size_new = len(page.locator("div.footer>div.author-wrapper>a").all())
-                    if size_new <= size:
+                    list_new = page.locator("div.footer>div.author-wrapper>a").all()
+                    if len(list_new) > 0:
+                        for new in list_new:
+                            user_href = new.get_attribute('href')
+                            user_id = user_href.replace('/user/profile/', '').split('?')[0]
+                            user_list.add(user_id)
+                    if len(user_list) <= size:
                         error_num += 1
                         if error_num > 5:
                             break
                     else:
                         error_num = 0
-                user_list = page.locator("div.footer>div.author-wrapper>a").all()
-                for user in user_list:
-                    user_href = user.get_attribute('href')
-                    user_id = user_href.replace('/user/profile/', '').split('?')[0]
+                        size = len(user_list)
+                for user_id in user_list:
                     insert_query = """
                                         INSERT IGNORE INTO bs_user_xhs
                                         (id)
