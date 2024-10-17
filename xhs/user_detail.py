@@ -48,7 +48,7 @@ def run(pw: Playwright) -> None:
         conn = pymysql.connect(host=mysql_host, port=mysql_port, user=mysql_user, passwd=mysql_password, db=mysql_db, charset='utf8mb4')
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         select_query = """
-            select id from bs_user_xhs where update_time is null
+            select id from bs_user_xhs where name is null
         """
         cursor.execute(select_query)
         results = cursor.fetchall()
